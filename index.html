@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Kumpulan game browser ringan. Langsung main tanpa install dan tanpa login." />
+  <meta name="theme-color" content="#0A192F" />
+  <title>Game Browser Collection</title>
+  <link rel="icon" href="https://i.postimg.cc/GmWt2wch/H-blue.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Game Browser Collection, beranda">
+        <img src="https://i.postimg.cc/GmWt2wch/H-blue.webp" alt="" height="36" onerror="this.remove()" />
+        <span class="brand-name">Game Browser</span>
+      </a>
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <a href="#games">All Games</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container" aria-labelledby="hero-title">
+      <h1 id="hero-title">Mainkan langsung di browser.</h1>
+      <p>Game ringan tanpa install, tanpa login, tanpa server. Pilih dan langsung main.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" id="featured-link" href="#games">Play Featured</a>
+        <button class="btn btn-ghost" id="random-btn" type="button">Game Acak</button>
+      </div>
+    </section>
+
+    <section class="games-section container" id="games" aria-labelledby="games-title">
+      <div class="section-head">
+        <h2 id="games-title">All Games</h2>
+        <div class="toolbar">
+          <div class="chip-group" id="category-chips" role="group" aria-label="Filter kategori"></div>
+          <div class="search">
+            <label class="sr-only" for="game-search">Cari game</label>
+            <input id="game-search" type="search" placeholder="Cari game..." autocomplete="off" />
+          </div>
+        </div>
+        <p id="catalog-status" class="card-desc" aria-live="polite"></p>
+      </div>
+
+      <ul class="game-grid" id="game-grid">
+        <li class="skeleton" aria-hidden="true"></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Muhaajir · MIT License</p>
+    </div>
+  </footer>
+
+  <script src="scripts/game-registry.js"></script>
+  <script src="scripts/utils.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
