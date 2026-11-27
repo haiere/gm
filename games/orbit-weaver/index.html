@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#020308">
+<title>Orbit Weaver</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+<canvas id="game"></canvas>
+
+<!-- ---------- HUD ---------- -->
+<div id="hud">
+  <div class="hud-block">
+    <div class="hud-label">SCORE</div>
+    <div class="hud-value" id="scoreEl">0</div>
+  </div>
+  <a class="hud-back" href="../../index.html">&larr; Katalog</a>
+  <div class="hud-block right">
+    <div class="hud-label">LEVEL</div>
+    <div class="hud-value" id="levelEl">1</div>
+  </div>
+</div>
+
+<div id="comboEl">x1</div>
+
+<!-- ---------- Desktop ability bar ---------- -->
+<div id="abilityBar">
+  <div class="ability" id="abFire"><span class="ab-name">FIRE</span><span class="ab-key" data-hint="attack">LMB / F</span></div>
+  <div class="ability" id="abJump"><span class="ab-name">JUMP</span><span class="ab-key" data-hint="jump">SPACE</span></div>
+  <div class="ability" id="abDash"><span class="ab-name">DASH</span><span class="ab-key" data-hint="dash">SHIFT</span></div>
+  <div class="ability" id="abPulse"><span class="ab-name">PULSE</span><span class="ab-key" data-hint="interact">E</span></div>
+</div>
+
+<!-- ---------- Mobile touch controls ---------- -->
+<div id="touchControls" aria-hidden="true">
+  <div id="joystick">
+    <div id="joyKnob"></div>
+  </div>
+
+  <div id="actionPad">
+    <button class="tbtn" type="button" data-action="jump"><span>JUMP</span></button>
+    <button class="tbtn" type="button" data-action="interact"><span>PULSE</span></button>
+    <button class="tbtn" type="button" data-action="dash"><span>DASH</span></button>
+    <button class="tbtn primary" type="button" data-action="attack"><span>FIRE</span></button>
+  </div>
+
+  <button class="tbtn" type="button" id="pauseBtn" data-action="pause"><span>❚❚</span></button>
+</div>
+
+<!-- ---------- START SCREEN ---------- -->
+<div id="startScreen" class="screen">
+    <a class="back-link" href="../../index.html">&larr; Katalog</a>
+  <div class="panel">
+    <h1>ORBIT<span>WEAVER</span></h1>
+    <p class="tagline">Hold to spiral outward. Release to fall inward.<br>Weave between the rocks.</p>
+
+    <div class="instructions desktop-only">
+      <div class="inst"><span class="key">W</span><span class="key">↑</span> Hold — thrust outward</div>
+      <div class="inst"><span class="key">S</span><span class="key">↓</span> Dive inward faster</div>
+      <div class="inst"><span class="key">A</span><span class="key">D</span> Steer the orbit</div>
+      <div class="inst"><span class="key">MOUSE</span> Aim · <span class="key">LMB</span> Fire</div>
+      <div class="inst"><span class="key">SPACE</span> Jump · <span class="key">SHIFT</span> Dash · <span class="key">E</span> Pulse</div>
+      <div class="inst"><span class="key">ESC</span> Pause · <span class="key">R</span> Restart</div>
+    </div>
+
+    <div class="instructions touch-only">
+      <div class="inst"><span class="key">JOYSTICK</span> Up = fly outward · Down = dive in</div>
+      <div class="inst"><span class="key">FIRE</span> Shoot the rocks apart</div>
+      <div class="inst"><span class="key">JUMP</span><span class="key">DASH</span><span class="key">PULSE</span> Abilities</div>
+      <div class="inst"><span class="key">❚❚</span> Pause &amp; settings</div>
+    </div>
+
+    <button id="startBtn" class="btn">START</button>
+    <button id="settingsFromStartBtn" class="btn ghost">SETTINGS</button>
+
+    <p class="hint">Chain orbs quickly to build a score multiplier.<br>The core is safe — the rocks are not.</p>
+  </div>
+</div>
+
+<!-- ---------- GAME OVER SCREEN ---------- -->
+<div id="overScreen" class="screen hidden">
+    <a class="back-link" href="../../index.html">&larr; Katalog</a>
+  <div class="panel">
+    <div class="over-title">GAME OVER</div>
+    <div class="new-best" id="newBestEl" style="visibility:hidden">NEW RECORD!</div>
+
+    <div class="stat-row">
+      <div>
+        <div class="stat-label">SCORE</div>
+        <div class="stat-value" id="finalScoreEl">0</div>
+      </div>
+      <div>
+        <div class="stat-label">BEST</div>
+        <div class="stat-value best" id="bestScoreEl">0</div>
+      </div>
+    </div>
+
+    <button id="restartBtn" class="btn">RESTART</button>
+    <button id="settingsFromOverBtn" class="btn ghost">SETTINGS</button>
+    <p class="hint">Level reached: <span id="finalLevelEl">1</span> · Press <b>R</b> to restart</p>
+  </div>
+</div>
+
+<!-- ---------- PAUSE SCREEN ---------- -->
+<div id="pauseScreen" class="screen hidden">
+    <a class="back-link" href="../../index.html">&larr; Katalog</a>
+  <div class="panel">
+    <div class="pause-title">PAUSED</div>
+    <p class="hint" style="margin-top:10px;margin-bottom:20px">Take a breath. The rocks will wait.</p>
+
+    <button id="resumeBtn" class="btn">RESUME</button>
+    <button id="settingsFromPauseBtn" class="btn ghost">SETTINGS</button>
+    <button id="restartFromPauseBtn" class="btn ghost">RESTART RUN</button>
+    <p class="hint">Press <b>ESC</b> to resume</p>
+  </div>
+</div>
+
+<!-- ---------- SETTINGS SCREEN ---------- -->
+<div id="settingsScreen" class="screen hidden">
+  <div class="panel">
+    <div class="pause-title" style="font-size:clamp(20px,5.5vw,26px);letter-spacing:4px">SETTINGS</div>
+
+    <div class="settings-title">KEY BINDINGS</div>
+    <div id="bindList"></div>
+
+    <div class="settings-title">SENSITIVITY</div>
+    <div class="slider-row">
+      <label for="joySens">Joystick</label>
+      <input type="range" id="joySens" min="0.4" max="1.8" step="0.05" value="1">
+      <span class="bind-label" id="joySensVal" style="flex:0 0 38px;text-align:right">1.00</span>
+    </div>
+    <div class="slider-row">
+      <label for="mouseSens">Mouse Aim</label>
+      <input type="range" id="mouseSens" min="0.4" max="2" step="0.05" value="1">
+      <span class="bind-label" id="mouseSensVal" style="flex:0 0 38px;text-align:right">1.00</span>
+    </div>
+
+    <div class="settings-title">MOBILE CONTROLS</div>
+    <div class="slider-row">
+      <label>On-screen pad</label>
+      <div class="seg" id="touchSeg">
+        <button type="button" data-val="auto">AUTO</button>
+        <button type="button" data-val="on">ON</button>
+        <button type="button" data-val="off">OFF</button>
+      </div>
+    </div>
+
+    <p class="hint" id="deviceHint" style="margin-top:14px"></p>
+
+    <button id="resetBindingsBtn" class="btn ghost" style="margin-top:16px">RESET TO DEFAULTS</button>
+    <button id="settingsBackBtn" class="btn" style="margin-top:10px">BACK</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
