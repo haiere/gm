@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#04050d" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>STARFALL — Space Shooter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="game-wrap">
+  <canvas id="game"></canvas>
 
+  <!-- HUD -->
+  <div id="hud">
+    <div class="stat">SCORE <span class="value" id="score">0</span></div>
+    <a class="hud-back" href="../../index.html" aria-label="Kembali ke katalog">&larr;</a>
+    <button id="settings-toggle" aria-label="Open settings">⚙</button>
+    <div class="stat">LIVES <span id="lives"></span></div>
+  </div>
+
+  <!-- Mobile Controls (overlay HTML, bukan digambar ke canvas) -->
+  <div id="mobile-controls" class="mobile-controls" aria-hidden="true">
+    <div id="joystick" class="joystick">
+      <div id="joystick-knob" class="joystick-knob"></div>
+    </div>
+    <div class="action-buttons">
+      <button class="action-btn btn-pause"    data-action="pause"    aria-label="Pause">⏸</button>
+      <button class="action-btn btn-jump"     data-action="jump"     aria-label="Jump">⬆</button>
+      <button class="action-btn btn-interact" data-action="interact" aria-label="Interact">E</button>
+      <button class="action-btn btn-dash"     data-action="dash"     aria-label="Dash">⚡</button>
+      <button class="action-btn btn-attack"   data-action="attack"   aria-label="Attack">🔥</button>
+    </div>
+  </div>
+
+  <!-- Start screen -->
+  <div id="start-screen" class="screen">
+    <a class="back-link" href="../../index.html">&larr; Katalog</a>
+    <h1>STARFALL</h1>
+    <p class="sub">SURVIVE THE ENDLESS SWARM</p>
+    <div class="keys" id="start-keys">
+      <kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd> — MOVE<br />
+      <kbd>CLICK</kbd> / <kbd>J</kbd> — FIRE &nbsp;•&nbsp; <kbd>SPACE</kbd> — JUMP<br />
+      <kbd>SHIFT</kbd> — DASH &nbsp;•&nbsp; <kbd>E</kbd> — INTERACT<br />
+      <kbd>ESC</kbd> / <kbd>P</kbd> — PAUSE &nbsp;•&nbsp; <kbd>R</kbd> — RESET
+    </div>
+    <button id="start-btn" class="btn">START MISSION</button>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="gameover-screen" class="screen hidden">
+    <a class="back-link" href="../../index.html">&larr; Katalog</a>
+    <h1 class="danger">GAME OVER</h1>
+    <p class="sub">FINAL SCORE <strong id="final-score">0</strong></p>
+    <p class="sub small">BEST <span id="best-score">0</span></p>
+    <button id="restart-btn" class="btn">RESTART</button>
+    <p class="sub small" style="margin-top:6px;">or press <kbd style="font-family:inherit;padding:1px 6px;border-radius:4px;background:rgba(90,160,220,.2);border:1px solid rgba(120,200,255,.4);">SPACE</kbd></p>
+  </div>
+
+  <!-- Settings screen -->
+  <div id="settings-screen" class="screen hidden" role="dialog" aria-modal="true">
+    <h1>SETTINGS</h1>
+    <div class="settings-body">
+      <section class="settings-section">
+        <h3>MOBILE CONTROLS</h3>
+        <div class="radio-group" id="mc-mode">
+          <button class="radio-btn" data-val="auto">AUTO</button>
+          <button class="radio-btn" data-val="on">ON</button>
+          <button class="radio-btn" data-val="off">OFF</button>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h3>JOYSTICK</h3>
+        <div class="slider-row">
+          <span>SENSITIVITY</span>
+          <input type="range" id="stick-sens" min="0.5" max="2" step="0.05" value="1" />
+          <span class="val" id="stick-sens-val">1.00</span>
+        </div>
+        <div class="slider-row" style="margin-top:10px;">
+          <span>DEAD ZONE&nbsp;</span>
+          <input type="range" id="stick-dead" min="0" max="0.4" step="0.02" value="0.14" />
+          <span class="val" id="stick-dead-val">0.14</span>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h3>KEY BINDINGS</h3>
+        <div id="bindings-list"></div>
+        <button id="reset-bindings" class="btn small">RESET TO DEFAULTS</button>
+      </section>
+    </div>
+    <button id="close-settings" class="btn">CLOSE</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
